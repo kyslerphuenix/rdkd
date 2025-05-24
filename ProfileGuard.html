@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Profile Guard</title>
+    <style>
+        body { width: 250px; padding: 15px; font-family: Arial; background: #f9f9f9; }
+        h3 { color: #2196F3; text-align: center; }
+        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .switch input { opacity: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background: #2196F3; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .status { margin: 15px 0; font-weight: bold; text-align: center; }
+        .on { color: green; }
+        .off { color: red; }
+        button { background: #2196F3; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+    <h3>Profile Guard</h3>
+    <label class="switch">
+        <input type="checkbox" id="guardToggle">
+        <span class="slider"></span>
+    </label>
+    <div id="status" class="status off">GUARD: OFF</div>
+    <button id="saveBtn">SAVE</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('guardToggle');
+            const status = document.getElementById('status');
+            const saveBtn = document.getElementById('saveBtn');
+
+            // Load saved state
+            chrome.storage.local.get(['guardOn'], function(result) {
+                toggle.checked = result.guardOn || false;
+                updateStatus();
+            });
+
+            // Update status text
+            function updateStatus() {
+                if (toggle.checked) {
+                    status.textContent = "GUARD: ON";
+                    status.className = "status on";
+                } else {
+                    status.textContent = "GUARD: OFF";
+                    status.className = "status off";
+                }
+            }
+
+            // Toggle change
+            toggle.addEventListener('change', updateStatus);
+
+            // Save settings
+            saveBtn.addEventListener('click', function() {
+                chrome.storage.local.set({ guardOn: toggle.checked }, function() {
+                    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                        chrome.tabs.sendMessage(tabs[0].id, { guardOn: toggle.checked });
+                    });
+                    alert("Settings saved!");
+                });
+            });
+        });
+    </script>
+</body>
+  </html>
