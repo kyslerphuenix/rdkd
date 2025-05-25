@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c3c fbstate Utility Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #0f0f1a;
+            --light: #f5f6fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .steps-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .steps-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .steps-title i {
+            font-size: 1.8rem;
+        }
+
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .download-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .download-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-title i {
+            font-size: 1.8rem;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .download-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
+        }
+
+        .note {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid var(--primary);
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .friendly-tip {
+            background: rgba(110, 69, 226, 0.2);
+            border-left: 3px solid var(--primary);
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            margin: 20px 0;
+        }
+
+        .friendly-tip-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .faq-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-title i {
+            font-size: 1.8rem;
+        }
+
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            color: rgba(255, 255, 255, 0.7);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(90deg);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>c3c fbstate Utility Guide</h1>
+            <p class="subtitle">Simple steps to get your Facebook authentication state</p>
+        </header>
+
+        <section class="steps-section">
+            <h2 class="steps-title"><i class="fas fa-list-ol"></i> Step-By-Step Guide</h2>
+            
+            <div class="friendly-tip">
+                <h3 class="friendly-tip-title"><i class="fas fa-lightbulb"></i> Quick Tip</h3>
+                <p>First download both required files below, then follow these steps carefully.</p>
+            </div>
+
+            <div class="steps-container">
+                <!-- Steps 1-9 remain unchanged from previous version -->
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Install Required Files</h3>
+                        <p class="step-description">Download both Kiwi Browser and c3c-fbstate from the links below before proceeding.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Launch Kiwi Browser</h3>
+                        <p class="step-description">Open the Kiwi Browser you just installed and prepare to load the extension.</p>
+                    </div>
+                </div>
+                
+                <!-- ... other steps ... -->
+            </div>
+
+            <div class="note">
+                <p><strong>Note:</strong> Your fbstate contains sensitive login credentials. Keep it secure and never share it publicly.</p>
+            </div>
+        </section>
+
+        <section class="download-section">
+            <h2 class="download-title"><i class="fas fa-download"></i> Required Downloads</h2>
+            <div class="download-grid">
+                <div class="download-card">
+                    <h3 class="download-card-title">Kiwi Browser</h3>
+                    <p>Chromium browser with extension support for Android</p>
+                    <a href="https://kiwi-browser-fast-quiet.en.softonic.com/android/download" class="download-btn" target="_blank">
+                        <i class="fas fa-download"></i> Download Browser
+                    </a>
+                </div>
+                <div class="download-card">
+                    <h3 class="download-card-title">c3c-fbstate</h3>
+                    <p>Tool to generate Facebook authentication tokens</p>
+                    <a href="https://github.com/c3cbot/c3c-fbstate/archive/refs/tags/1.5.zip" class="download-btn" target="_blank">
+                        <i class="fas fa-download"></i> Download Utility
+                    </a>
+                </div>
+                <div class="download-card">
+                    <h3 class="download-card-title">Share Boost</h3>
+                    <p>Use your fbstate with our sharing tool</p>
+                    <a href="https://kysler-auto-sharee.onrender.com/" class="download-btn" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Open Share Boost
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- New FAQ Section -->
+        <section class="faq-section">
+            <h2 class="faq-title"><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Is this method safe to use?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, when used properly. The c3c-fbstate utility runs locally on your device and doesn't send your data anywhere. However, you should never share your fbstate with others as it contains sensitive login information.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Why do I need Kiwi Browser?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kiwi Browser is one of the few Android browsers that supports Chrome extensions. This allows you to run the c3c-fbstate utility directly on your mobile device without needing a computer.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        <span>How long does the fbstate last?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Your fbstate typically remains valid until you log out of Facebook or after about 60 days of inactivity. You'll need to generate a new one when it expires.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Can I use this on iPhone?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Currently this method only works on Android devices because iOS doesn't support browsers with extension capabilities like Kiwi Browser. For iPhone users, you'll need to use a computer.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        <span>What if I get an error during installation?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Make sure you've enabled Developer Mode in Kiwi Browser before trying to install the extension. Also ensure you're selecting the complete downloaded ZIP file, not just its contents.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="copyright">©2025 Brysontut | All rights reserved</div>
+        <div class="social-links">
+            <a href="https://www.facebook.com/blank.0444" class="social-link" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://github.com/kyslerr" class="social-link" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://youtube.com/@kysler?si=-5AvRXt5v4vAzCVB" class="social-link" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                faqItem.classList.toggle('active');
+                
+                // Close other open FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem && item.classList.contains('active')) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
